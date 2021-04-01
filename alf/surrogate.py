@@ -7,7 +7,7 @@ from sklearn.metrics import mean_absolute_error
 
 from typing import *
 
-from parameter import ParameterSpace
+from .parameter import ParameterSpace
 
 
 class SurrogateModel:

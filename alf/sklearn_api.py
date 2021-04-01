@@ -5,9 +5,9 @@ import numpy as np
 from sklearn.model_selection._search import BaseSearchCV
 from rich.logging import RichHandler
 
-from surrogate import SurrogateModel
-from model import MODELS
-from parameter import ParameterSpace
+from .surrogate import SurrogateModel
+from .model import MODELS
+from .parameter import ParameterSpace
 
 FORMAT = "%(message)s"
 logging.basicConfig(

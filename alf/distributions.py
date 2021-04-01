@@ -2,7 +2,7 @@ import numpy as np
 
 from typing import *
 
-from parameter import ParameterData
+from .parameter import ParameterData
 
 
 def uniform(start: float = 0.0, end: float = 0.0):
