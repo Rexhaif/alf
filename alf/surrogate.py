@@ -77,7 +77,7 @@ class SurrogateModel:
         def wrapper(params):
             scores = []
             for param_set in params:
-                scores.append(func(**params))
+                scores.append(func(**param_set))
 
             return scores
 
