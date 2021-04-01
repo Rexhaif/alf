@@ -1,0 +1,5 @@
+scikit-learn==0.24.1
+numpy==1.20.2
+pandas==1.2.3
+modAL==0.4.1
+rich==10.0.1
