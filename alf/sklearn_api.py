@@ -60,7 +60,8 @@ class AlfSearchCV(BaseSearchCV):
             self._estimator, self._query_strategy, ParameterSpace.from_dict(self.param_distributions),
             seed_size=self.seed_size, n_exploration_iterations=self.n_iter,
             n_runs_per_iter=self.n_runs_per_iter, exploration_multiplier=self.exploraion_multiplier,
-            exploitation_multiplier=self.exploitation_multiplier, exploitation_eval_size=self.exploitation_eval_size
+            exploitation_multiplier=self.exploitation_multiplier, verbose=self.verbose,
+            exploitation_eval_size=self.exploitation_eval_size
         )
 
         def objective_evaluator(params):
