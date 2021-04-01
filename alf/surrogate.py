@@ -68,6 +68,17 @@ class SurrogateModel:
         self.__history_parameters.append(params)
         self.__history_scores += list(scores)
 
+    def objective(self, func):
+        def wrapper(params):
+            scores = []
+            for param_set in params:
+                scores.append(func(**params))
+
+            return scores
+
+        return wrapper
+
+
     def seeding(self, objective_evaluator):
         """
         Runs seed stage of optimizer
