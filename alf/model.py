@@ -22,12 +22,19 @@ def gaussian_process_max_std(regressor: ActiveLearner, X: np.ndarray, batch_size
     return idxs, X[idxs]
 
 
-MODELS = {
-    'random_forest': (RandomForestRegressor(n_jobs=-1), random_forest_max_std),
-    'gaussian_process': (
-        GaussianProcessRegressor(
-            kernel=RBF(length_scale=1.0, length_scale_bounds=(1e-2, 1e3))
-            + WhiteKernel(noise_level=1, noise_level_bounds=(1e-10, 1e+1))),
-        gaussian_process_max_std
-    )
-}
+def make_estimator_strategy(name: str):
+    """
+    Makes and returns estimator and strategy
+    :param name: name of estimator
+    :return: tuple (estimator, query_strategy)
+    """
+    MODELS = {
+        'random_forest': (RandomForestRegressor(n_jobs=-1), random_forest_max_std),
+        'gaussian_process': (
+            GaussianProcessRegressor(
+                kernel=RBF(length_scale=1.0, length_scale_bounds=(1e-2, 1e3))
+                       + WhiteKernel(noise_level=1, noise_level_bounds=(1e-10, 1e+1))),
+            gaussian_process_max_std
+        )
+    }
+    return MODELS[name]

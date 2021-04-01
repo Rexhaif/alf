@@ -6,7 +6,7 @@ from sklearn.model_selection._search import BaseSearchCV
 from rich.logging import RichHandler
 
 from .surrogate import SurrogateModel
-from .model import MODELS
+from .model import make_estimator_strategy
 from .parameter import ParameterSpace
 
 FORMAT = "%(message)s"
@@ -44,7 +44,7 @@ class AlfSearchCV(BaseSearchCV):
         self.exploitation_eval_size = exploitation_eval_size
         self.surrogate_model = surrogate_model
 
-        self._estimator, self._query_strategy = MODELS[surrogate_model]
+        self._estimator, self._query_strategy = make_estimator_strategy(surrogate_model)
         self.__surrogate = None
 
         super().__init__(
