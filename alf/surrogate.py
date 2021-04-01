@@ -69,6 +69,11 @@ class SurrogateModel:
         self.__history_scores += list(scores)
 
     def objective(self, func):
+        """
+        Wraps generic argumented function into a function that consequently evaluates multiple parameter sets
+        :param func: func that accepts params and returns score, that must be minimized
+        :return: wrapper
+        """
         def wrapper(params):
             scores = []
             for param_set in params:
@@ -77,7 +82,6 @@ class SurrogateModel:
             return scores
 
         return wrapper
-
 
     def seeding(self, objective_evaluator):
         """
