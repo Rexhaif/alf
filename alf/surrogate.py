@@ -1,13 +1,23 @@
+import logging
+
 import pandas as pd
 import numpy as np
 
 from modAL.models import ActiveLearner
 from sklearn.base import BaseEstimator
 from sklearn.metrics import mean_absolute_error
+from rich.logging import RichHandler
 
 from typing import *
 
 from .parameter import ParameterSpace
+
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
+)
+
+log = logging.getLogger("surrogate")
 
 
 class SurrogateModel:
@@ -17,7 +27,7 @@ class SurrogateModel:
             parameter_space: ParameterSpace, seed_size: int = 20,
             n_exploration_iterations: int = 10, n_runs_per_iter: int = 10,
             exploration_multiplier: int = 10, exploitation_eval_size: int = 10,
-            exploitation_multiplier: int = 10
+            exploitation_multiplier: int = 10, verbose: int = 0
 
     ):
         """
@@ -48,6 +58,9 @@ class SurrogateModel:
         self.__history_parameters = []
         self.__history_scores = []
 
+        self.verbose = verbose
+        log.setLevel(verbose)
+
     def __sample_batch(self, batch_size: int = 10):
         return pd.concat([x for x in self.parameter_space.sample(batch_size)])
 
@@ -69,6 +82,10 @@ class SurrogateModel:
 
         self.surrogate.fit(X=params.values, y=scores)
 
+        if self.verbose > 0:
+            mae = self.score_on_history()
+            log.info(f"Seed stage MAE = {mae:.4f}")
+
     def exploration(self, objective_evaluator):
         """
         Runs exploration stage of optimizer - training optimizer to pred
@@ -85,6 +102,10 @@ class SurrogateModel:
 
             self.__update_history(params, scores)
             self.surrogate.teach(params.values, scores)
+
+            if self.verbose:
+                mae = self.score_on_history()
+                log.info(f"Exploration iter {i} MAE = {mae:.4f}")
 
     def score_on_history(self):
         """
